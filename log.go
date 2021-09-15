@@ -10,12 +10,11 @@ type Logger struct {
 	output io.Writer
 }
 
-func NewLogger() *Logger {
-	return &Logger{output: os.Stdout}
-}
-
-func (l *Logger) SetOutput(writer io.Writer) {
-	l.output = writer
+func NewLogger(writer io.Writer) *Logger {
+	if writer == nil {
+		writer = os.Stdout
+	}
+	return &Logger{output: writer}
 }
 
 func (l *Logger) Begin() {
