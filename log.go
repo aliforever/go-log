@@ -6,11 +6,13 @@ import (
 	"os"
 	"runtime"
 	"strings"
+	"time"
 )
 
 type Logger struct {
 	output   io.Writer
 	prefixes []string
+	beganAt  int64
 }
 
 func NewLogger(writer io.Writer) *Logger {
@@ -20,12 +22,18 @@ func NewLogger(writer io.Writer) *Logger {
 	return &Logger{output: writer}
 }
 
-func (l *Logger) Begin() {
+func (l *Logger) Begin() *Logger {
 	fmt.Fprintln(l.output, "BEGIN")
+	l.beganAt = time.Now().UnixNano()
+	return &Logger{
+		beganAt:  time.Now().UnixNano(),
+		output:   l.output,
+		prefixes: l.prefixes,
+	}
 }
 
 func (l *Logger) End() {
-	fmt.Fprintln(l.output, "END")
+	fmt.Fprintln(l.output, "END", fmt.Sprintf("&t=%dµs", int64(float64(time.Now().UnixNano()-l.beganAt)*0.001)))
 }
 
 func (l *Logger) trace() string {

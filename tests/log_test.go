@@ -1,11 +1,26 @@
 package tests
 
 import (
+	"fmt"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/aliforever/go-log"
 )
+
+func TestLogger_Log_Begin_End(t *testing.T) {
+	logger := log.NewLogger(nil)
+
+	localLogger := logger.Begin()
+
+	var name string = "Apple"
+	localLogger.LogF("The name is %q", name)
+	fmt.Printf("Hello %s!\n", name)
+
+	time.Sleep(time.Microsecond * 2)
+	localLogger.End()
+}
 
 func TestLogger_Log_Apple(t *testing.T) {
 	logger := log.NewLogger(nil)
