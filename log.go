@@ -13,6 +13,7 @@ type Logger struct {
 	output   io.Writer
 	prefixes []string
 	beganAt  int64
+	level    uint8
 }
 
 func NewLogger(writer io.Writer) *Logger {
@@ -57,17 +58,18 @@ func (l *Logger) prefix() interface{} {
 	return l.trace() + ":"
 }
 
-func (l *Logger) Log(a ...interface{}) {
-	fmt.Fprintln(l.output, append([]interface{}{l.prefix()}, a...)...)
-}
-
-func (l *Logger) LogF(format string, a ...interface{}) {
-	fmt.Fprintln(l.output, append([]interface{}{l.prefix()}, fmt.Sprintf(format, a...))...)
-}
-
 func (l *Logger) Prefix(prefixes ...string) *Logger {
 	return &Logger{
 		output:   l.output,
 		prefixes: append(l.prefixes, prefixes...),
+	}
+}
+
+func (l *Logger) Level(level uint8) *Logger {
+	return &Logger{
+		output:   l.output,
+		prefixes: l.prefixes,
+		beganAt:  time.Now().UnixNano(),
+		level:    level,
 	}
 }
