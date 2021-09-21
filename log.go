@@ -33,6 +33,7 @@ func (l *Logger) Begin() *Logger {
 		beganAt:  time.Now(),
 		output:   l.output,
 		prefixes: l.prefixes,
+		level:    l.level,
 	}
 }
 
