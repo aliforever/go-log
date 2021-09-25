@@ -70,6 +70,7 @@ func (l *Logger) Prefix(prefixes ...string) *Logger {
 	return &Logger{
 		output:   l.output,
 		prefixes: append(l.prefixes, prefixes...),
+		level:    l.level,
 	}
 }
 
