@@ -10,13 +10,13 @@ import (
 
 func TestLogger_LogF(t *testing.T) {
 	var builder strings.Builder
-	logger := log.NewLogger(&builder)
+	logger := log.NewLogger(&builder).Level(6)
 
 	var name string = "Ali"
 	logger.LogF(fmt.Sprintf("My Name is %q", name))
 
 	{
-		var expected string = "My Name is \"Ali\"\n"
+		var expected string = "github.com/aliforever/go-log/tests.TestLogger_LogF: My Name is \"Ali\"\n"
 		var output string = builder.String()
 
 		if expected != output {
